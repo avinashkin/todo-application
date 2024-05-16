@@ -27,7 +27,7 @@ const Body = () => {
     const formData = new FormData(e.target);
     const dataTodo = Object.fromEntries(formData);
 
-    if (!dataTodo.title || dataTodo.title.length() < 3) {
+    if (!dataTodo.title) {
       return;
     }
 
