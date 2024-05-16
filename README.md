@@ -5,6 +5,8 @@
 
 ## This is a super simple Todo App built using React.js and styled using Tailwind CSS.
 
+**Live demo: [https://react-todo-webap.netlify.app/](https://react-todo-webap.netlify.app/)**
+
 ## 😃 Features:
 
 - ➕ Add todos
@@ -13,5 +15,4 @@
 - ▶️ Load the todos from Local Storage when the site is loaded again
 - 🌙 Filter the todos based on categories and status
 
-## How to use?
 
