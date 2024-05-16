@@ -21,15 +21,6 @@ const Filters = (props = {}) => {
                 })}
             </select>
           </div>
-          {/* <div className="flex gap-4 items-center">
-            <label htmlFor="tags">Tags:</label>
-            <select id="tags" className="border rounded-lg p-1" onChange={(e) => setSelectedFilter('tag', e.target.value)}>
-                <option value="all">All</option>
-                {tags.map((tag, idx) => {
-                    return <option value={tag} key={idx}>{tag}</option>
-                })}
-            </select>
-          </div> */}
           <button className="p-1 w-20 border hover:shadow rounded-lg" onClick={applyFilters}>Apply</button>
         </div>
       </div>
