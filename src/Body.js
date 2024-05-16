@@ -109,9 +109,6 @@ const Body = () => {
             className="w-full pl-4 h-11 border border-solid rounded-lg outline-none focus:shadow-lg"
             placeholder="Add Todo..."
             required
-            // value={inputTask}
-            // onChange={(e) => setInputTask(e.target.value)}
-
           />
           <input
             type="text"
