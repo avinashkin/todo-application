@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import Filters from "./Filters";
+import Header from "./Header";
 
 const Body = () => {
   const [todos, setTodo] = useState([]);
@@ -173,6 +174,8 @@ const Body = () => {
   }
 
   return (
+    <>
+    <Header />
     <div className="mx-[7%] my-16 flex flex-col lg:flex-row gap-6">
       {renderInput()}
       <div className="w-full flex flex-col flex-1 pt-4">
@@ -198,6 +201,7 @@ const Body = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
