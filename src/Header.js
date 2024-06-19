@@ -4,14 +4,14 @@ import user from "../src/images/user.png";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const [showLogout, setLogout] = useState(false); 
+  const [showLogout, setLogout] = useState(false);
 
   return (
     <header className="w-full h-16 shadow-lg flex items-center justify-between">
       <h1 className="pl-10 sm:pl-28 align-middle text-3xl font-black">
         Todo List
       </h1>
-      {/* <div className="pr-10 sm:pr-20 gap-8 flex relative">
+      <div className="pr-10 sm:pr-20 gap-8 flex relative">
         <img
           src={bell}
           className="cursor-pointer"
@@ -34,7 +34,7 @@ const Header = () => {
             </div>
           </Link>
         )}
-      </div> */}
+      </div>
     </header>
   );
 };

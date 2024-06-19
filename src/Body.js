@@ -8,6 +8,8 @@ const Body = () => {
   const [categories, setCategories] = useState([]);
   const [filters, setFilters] = useState({});
   const [dragItem, setDragItem] = useState(null);
+  const userDetails = localStorage.getItem("user");
+  console.log('user', userDetails);
 
   useEffect(() => {
     const allTodos = localStorage.getItem("todos") || [];
