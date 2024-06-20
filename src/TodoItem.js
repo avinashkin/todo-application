@@ -1,35 +1,54 @@
 import { useEffect, useRef, useState } from "react";
 
 const TodoItem = (props = {}) => {
-  const { deleteTodo, setStatus, todo = {}, updateTodoList, moveTodo, setDragItem } = props;
+  const {
+    deleteTodo,
+    todo = {},
+    updateTodoList,
+    moveTodo,
+    setDragItem,
+    updateSelectedTodo,
+  } = props;
   const [isEditing, setIsEditing] = useState(false);
   const [editableTitle, setEditTitle] = useState(todo.title);
   const inputRef = useRef();
   const itemRef = useRef();
+  const isTodoCompleted = todo?.status === "completed";
 
   const updateTodo = () => {
+    if (todo.title !== editableTitle.trim() && editableTitle.trim()) {
+      updateTodoList(todo.id, editableTitle.trim());
+    }
+    setIsEditing(false);
+  };
+
+  const updateStatus = (id) => {
+    let data = "completed";
+    if (isTodoCompleted) {
+      data = "pending";
+    }
+    updateSelectedTodo("status", data, todo.id);
+  };
+
+  const updateTitle = () => {
     if (isEditing) {
       if (!editableTitle.trim()) {
         alert("Title can not be empty");
       }
-      if (todo.title !== editableTitle.trim() && editableTitle.trim()) {
-        updateTodoList(todo.id, editableTitle.trim());
-        setEditTitle(editableTitle.trim());
-      }
-      setEditTitle(todo.title);
-      setIsEditing(false);
+      updateSelectedTodo("title", editableTitle, todo.id, updateTodo);
     } else {
       setIsEditing(true);
     }
   };
 
   const deleteT = (e) => {
-    itemRef.current.classList.remove('animate-slide-up');
-    itemRef.current.classList.add('animate-delete-up');
-    setTimeout(() => {
-        deleteTodo(todo.id)
-    }, 150);
-  }
+    deleteTodo(todo.id, deleteCallback);
+  };
+
+  const deleteCallback = () => {
+    itemRef.current.classList.remove("animate-slide-up");
+    itemRef.current.classList.add("animate-delete-up");
+  };
 
   useEffect(() => {
     if (isEditing) {
@@ -39,12 +58,12 @@ const TodoItem = (props = {}) => {
 
   const handleDragStart = (e) => {
     setDragItem(todo);
-    e.dataTransfer.setData('text/plain', todo.id.toString());
+    e.dataTransfer.setData("text/plain", todo.id.toString());
   };
 
   const handleDragEnd = () => {
     setDragItem(null);
-  }
+  };
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -54,12 +73,12 @@ const TodoItem = (props = {}) => {
     moveTodo(todo);
   };
 
-  const isTodoCompleted = todo?.status === "completed";
-
   return (
     <div
       key={todo.id}
-      className={`p-3 h-fit border rounded-lg bg-white animate-slide-up transition-all ${isEditing && 'shadow-lg'}`}
+      className={`p-3 h-fit border rounded-lg bg-white animate-slide-up transition-all ${
+        isEditing && "shadow-lg"
+      }`}
       draggable
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
@@ -72,7 +91,7 @@ const TodoItem = (props = {}) => {
           <input
             type="checkbox"
             checked={isTodoCompleted}
-            onChange={() => setStatus(todo.id)}
+            onChange={() => updateStatus(todo.id)}
             className="cursor-pointer"
           />
           {!isEditing ? (
@@ -96,8 +115,10 @@ const TodoItem = (props = {}) => {
         </div>
         <div className="flex gap-4 items-center">
           <button
-            className={`border px-1 sm:px-2 w-fit rounded-lg hover:shadow ${isEditing ? 'hover:bg-lime-300' : 'hover:bg-amber-200'}`}
-            onClick={() => updateTodo()}
+            className={`border px-1 sm:px-2 w-fit rounded-lg hover:shadow ${
+              isEditing ? "hover:bg-lime-300" : "hover:bg-amber-200"
+            }`}
+            onClick={() => updateTitle()}
           >
             {!isEditing ? "Edit" : "Save"}
           </button>
@@ -110,11 +131,19 @@ const TodoItem = (props = {}) => {
         </div>
       </div>
       <div className="flex items-center gap-4 justify-end mt-4">
-          {todo.category && <div className="text-sm">Category: {todo.category}</div>}
-          {todo.dueDate && <div className="text-sm">Due: {todo.dueDate}</div>}
-          {todo?.tags?.length > 0 && <div className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[10rem]" title={todo.tags.join(", ")}>Tags: {todo.tags.join(", ")}</div>}
+        {todo.category && (
+          <div className="text-sm">Category: {todo.category}</div>
+        )}
+        {todo.dueDate && <div className="text-sm">Due: {todo.dueDate}</div>}
+        {todo?.tags?.length > 0 && (
+          <div
+            className="text-sm overflow-hidden whitespace-nowrap text-ellipsis max-w-[10rem]"
+            title={todo.tags.join(", ")}
+          >
+            Tags: {todo.tags.join(", ")}
+          </div>
+        )}
       </div>
-      
     </div>
   );
 };

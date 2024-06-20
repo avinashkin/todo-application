@@ -4,9 +4,10 @@ import Login from "./Login";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 const App = () => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const isLoggedIn = localStorage.getItem('isLoggedIn');
   const token = localStorage.getItem('token');
   const navigate = useNavigate();
+  const setLoggedIn = () => localStorage.setItem('isLoggedIn', true);
   useEffect(() => {
     if (!isLoggedIn || !token) {
       navigate('/login');

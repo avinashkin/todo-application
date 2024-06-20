@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import loginImg from "../src/images/login.png";
-import { login } from "./api/todoApi";
+import { createUser, login } from "./api/todoApi";
 import { useNavigate } from "react-router-dom";
 
 const Login = (props = {}) => {
@@ -8,24 +8,61 @@ const Login = (props = {}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginMode, setLoginMode] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    resetForm();
+  }, []);
+
+  const resetForm = () => {
+    setEmail("");
+    setPassword("");
+  }
 
   const loginUser = async () => {
     if (!email || !password) {
-      alert('Email/Password empty!')
+      alert('Email/Password empty!');
+      return;
     }
     setLoading(true);
     const payload = {
       username: email,
       password
     };
+  
     await login(payload, handleRes);
   };
+
+  const signupUser = async () => {
+    if (!email || !password) {
+      alert('Email/Password empty!');
+      return;
+    }
+    setLoading(true);
+    const payload = {
+      email,
+      password
+    };
+    await createUser(payload, createUserCallback)
+  }
 
   const handleRes = (success, msg = '') => {
     if (success) {
       setLoggedIn(true);
       navigate("/");
+    } else {
+      alert(msg);
+    }
+    setLoading(false);
+  }
+
+  const createUserCallback = (success, msg = '') => {
+    if (success) {
+      setLoggedIn(true);
+      resetForm();
+      setLoginMode(true);
+      alert('User created. Login now!');
     } else {
       alert(msg);
     }
@@ -65,12 +102,12 @@ const Login = (props = {}) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button className="h-10 rounded-xl font-bold text-lg w-[20rem] text-white bg-sky-600 mt-8 tracking-wider" onClick={loginUser} disabled={loading} >
-              Login
+            <button className="h-10 rounded-xl font-bold text-lg w-[20rem] text-white bg-sky-600 mt-8 tracking-wider" onClick={loginMode ? loginUser : signupUser} disabled={loading} >
+            {loginMode ? 'Login' : 'Sign Up'}
             </button>
           </div>
           <div className="text-xs text-gray-500 mt-8">
-            New to Todo? <a href="#" className="underline-offset-1 hover:underline decoration-solid">Sign Up</a>
+            {loginMode ? 'New to Todo?' : 'Already a customer?'} <span onClick={() => setLoginMode(!loginMode)} className="underline-offset-1 hover:underline decoration-solid cursor-pointer">{loginMode ? 'Signup' : 'Login'}</span>
           </div>
         </div>
         <div className="flex relative flex-1">

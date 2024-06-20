@@ -1,10 +1,16 @@
 import { useState } from "react";
 import bell from "../src/images/bell.png";
 import user from "../src/images/user.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [showLogout, setLogout] = useState(false);
+  const navigate = useNavigate();
+
+  const logoutUser = () => {
+    localStorage.clear();
+    navigate('/login');
+  }
 
   return (
     <header className="w-full h-16 shadow-lg flex items-center justify-between">
@@ -28,11 +34,12 @@ const Header = () => {
           onClick={() => setLogout(!showLogout)}
         />
         {showLogout && (
-          <Link to="/login" className="cursor-pointer absolute bg-white px-4 py-2 rounded border top-10 left-9 before:content-[''] before:w-0 before:h-0 before:border-l-[7px] before:border-r-[7px] before:border-l-transparent before:border-r-transparent before:border-b-[7px] before:border-b-[#dad9d9] before:absolute before:top-[-7px] before:left-[35px]">
-            <div className="">
-              Logout
-            </div>
-          </Link>
+          <div
+            className="cursor-pointer absolute bg-white px-4 py-2 rounded border top-10 left-9 before:content-[''] before:w-0 before:h-0 before:border-l-[7px] before:border-r-[7px] before:border-l-transparent before:border-r-transparent before:border-b-[7px] before:border-b-[#dad9d9] before:absolute before:top-[-7px] before:left-[35px]"
+            onClick={logoutUser}
+          >
+            Logout
+          </div>
         )}
       </div>
     </header>
